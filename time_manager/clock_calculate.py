@@ -2,6 +2,10 @@ from math import sin, cos, pi
 from datetime import datetime
 # 计算指针角度及终止点
 def get_clock_hand(center_x, center_y, length1, length2, length3, time):
+    '''
+    传入圆心坐标、时针长度、分针长度、秒针长度、时间
+    得到时针、分针、秒针终点坐标
+    '''
     hour = time.hour
     minute = time.minute
     second = time.second

@@ -5,6 +5,9 @@ class historyLogger:
         self.log_path = './logs/mission_log.txt'
     
     def get_log(self):
+        '''
+        读取日志
+        '''
         log = []
         if os.path.exists(self.log_path):
             with open(self.log_path, 'r') as f:
@@ -12,7 +15,10 @@ class historyLogger:
         return log  
 
     def delete_log(self, index): 
-        index = index - 1   
+        '''
+        删除某一项记录
+        '''
+        index = index - 1  
         logs = self.get_log()
         if index < len(logs):
             logs.pop(index)
@@ -24,15 +30,24 @@ class historyLogger:
             return False
 
     def clear_log(self):
+        '''
+        清空日志
+        '''
         with open(self.log_path, 'w') as f:
             f.write('')
     
     def add_log(self, log):
+        '''
+        添加记录
+        '''
         with open(self.log_path, 'a') as f:
             f.write(log + '\n')
 
-    # f"{self.mission_class},备注:{self.mission_name},{start_time_str} —— {now_time_str},时长{int(time_diff_minute)}分钟\n"
+    # 每一条的记录格式为： f"{self.mission_class},备注:{self.mission_name},{start_time_str} —— {now_time_str},时长{int(time_diff_minute)}分钟\n"
     def history_statistic(self):
+        '''
+        统计历史记录，返回相应字典
+        '''
         logs = self.get_log()
         logs = [log.strip().split(',') for log in logs]
         # 元组前一项为任务次数，后一项为总时长(min)
