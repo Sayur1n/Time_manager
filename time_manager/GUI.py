@@ -13,8 +13,7 @@ from resource_path import resource_path, get_writable_folder
 
 from tkinter import filedialog
 import shutil
-# pyinstaller --onefile --noconsole --add-data "images;images" --add-data "music;music" --add-data "logs;logs" ./time_manager/main.py
-# pyinstaller --onefile ./time_manager/main.py --noconsole
+# pyinstaller --onefile --noconsole --add-data "images;images" ./time_manager/main.py
 
 class Manager_GUI:
     def __init__(self,root):
@@ -94,6 +93,8 @@ class Manager_GUI:
         '''
         递归式调用，每10ms更新一次界面，来保证界面的实时更新和番茄钟的触发
         '''
+        #if self.tomato_clock and (datetime.now() - self.start_time).total_seconds() //60 >= self.tomato_interval:
+        # 为了方便演示，实际单位为秒
         if self.tomato_clock and (datetime.now() - self.start_time).total_seconds() >= self.tomato_interval:
             self.tomato_clock_trigger()
         self.update_manager()
@@ -137,9 +138,12 @@ class Manager_GUI:
         '''
         选择音乐界面
         '''
+        # 设置窗口在屏幕中央
+        music_x = self.root.winfo_x() + (self.root.winfo_width() - 400) // 2
+        music_y = self.root.winfo_y() + (self.root.winfo_height() - 150) // 2
         music_window = tk.Toplevel(self.root)
         music_window.title("Choose Music")
-        music_window.geometry("400x150")
+        music_window.geometry(f"400x150+{music_x}+{music_y}")
         music_window.resizable(0,0)
         music_window.grab_set()
 
@@ -233,10 +237,11 @@ class Manager_GUI:
         if self.mission_on:
             messagebox.showerror("Error", "请先停止已在进行的任务！")
             return
-        
+        mission_x = self.root.winfo_x() + (self.root.winfo_width() - 300) // 2
+        mission_y = self.root.winfo_y() + (self.root.winfo_height() - 350) // 2
         mission_window = tk.Toplevel(self.root)
         mission_window.title("Choose Mission Details")
-        mission_window.geometry("300x350")
+        mission_window.geometry(f"300x350+{mission_x}+{mission_y}")
         mission_window.resizable(0,0)
         mission_window.grab_set()
 
@@ -332,10 +337,11 @@ class Manager_GUI:
     # 查看任务历史记录
     def history_log(self):
         font_settings = ('宋体', 18)
-        
+        history_x = self.root.winfo_x() + (self.root.winfo_width() - 800) // 2
+        history_y = self.root.winfo_y() + (self.root.winfo_height() - 800) // 2
         history_window = tk.Toplevel(self.root)
         history_window.title("Mission History")
-        history_window.geometry("800x800")
+        history_window.geometry(f"800x800+{history_x}+{history_y}")
         history_window.resizable(0,0)
         history_window.grab_set()
 
@@ -367,7 +373,9 @@ class Manager_GUI:
         def delete():
             logs_length = len(logs)
             delete_window = tk.Toplevel(history_window)
-            delete_window.geometry("350x200")
+            delete_x = history_window.winfo_x() + (history_window.winfo_width() - 350) // 2
+            delete_y = history_window.winfo_y() + (history_window.winfo_height() - 200) // 2
+            delete_window.geometry(f"350x200+{delete_x}+{delete_y}")
             delete_window.title("Delete Mission History")
             delete_window.grab_set()
             delete_window.resizable(0,0)
@@ -417,7 +425,9 @@ class Manager_GUI:
         # 清空任务记录回调函数
         def clear():
             confirm_window = tk.Toplevel(history_window)
-            confirm_window.geometry("350x200")
+            clear_x = history_window.winfo_x() + (history_window.winfo_width() - 350) // 2
+            clear_y = history_window.winfo_y() + (history_window.winfo_height() - 200) // 2
+            confirm_window.geometry(f"350x200+{clear_x}+{clear_y}")
             confirm_window.title("Clear Mission History")
             confirm_window.grab_set()   # 阻止与其他窗口的交互
 
