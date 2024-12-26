@@ -1,8 +1,9 @@
 import os
+from resource_path import resource_path, get_writable_folder
 
 class historyLogger:
     def __init__(self):
-        self.log_path = './logs/mission_log.txt'
+        self.log_path = get_writable_folder('logs') + '/mission_log.txt'
     
     def get_log(self):
         '''

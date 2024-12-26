@@ -2,15 +2,16 @@ import os
 import threading
 from pygame import mixer
 import time
-
+from resource_path import resource_path, get_writable_folder
 class musicPlayer:
     def __init__(self):
-        self.music_path = './music/'
+        self.music_path = get_writable_folder('music')
         self.stop_point = 0
-        self.music_list = self.get_music_list()
+        self.music_list = []
         self.thread = None
         self.music_name_on = None
         self.alarm_clock = 'alarm_clock.mp3'
+        self.get_music_list()
 
     def get_music_list(self):
         '''
@@ -22,6 +23,7 @@ class musicPlayer:
             music_list = os.listdir(self.music_path)
             clock_idx = music_list.index('alarm_clock.mp3')
             self.alarm_clock = music_list.pop(clock_idx)
+        self.music_list = music_list
         return music_list
     
     def play_music(self, music_name): # 这里的music_name带后缀

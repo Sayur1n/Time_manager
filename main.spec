@@ -5,7 +5,7 @@ a = Analysis(
     ['time_manager\\main.py'],
     pathex=[],
     binaries=[],
-    datas=[],
+    datas=[('images', 'images')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},

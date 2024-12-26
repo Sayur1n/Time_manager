@@ -9,9 +9,12 @@ from tkinter import ttk
 from clock_calculate import get_clock_hand
 from history_logger import historyLogger
 from music_player import musicPlayer
+from resource_path import resource_path, get_writable_folder
 
 from tkinter import filedialog
 import shutil
+# pyinstaller --onefile --noconsole --add-data "images;images" --add-data "music;music" --add-data "logs;logs" ./time_manager/main.py
+# pyinstaller --onefile ./time_manager/main.py --noconsole
 
 class Manager_GUI:
     def __init__(self,root):
@@ -62,7 +65,7 @@ class Manager_GUI:
         self.music_stop_button.place(x=600, y=530, width=120, height=80)
 
         # 创建钟表
-        clock_img = Image.open('./images/clock.png')
+        clock_img = Image.open(resource_path('images/clock.png'))
         if clock_img:
             clock_img = ImageTk.PhotoImage(clock_img)
 
@@ -185,7 +188,7 @@ class Manager_GUI:
 
             if music_file:
                 # 将文件复制到music文件夹下
-                dest = os.path.join('./music', os.path.basename(music_file))
+                dest = os.path.join(get_writable_folder('music'), os.path.basename(music_file))
                 shutil.copy2(music_file, dest)
                 
                 # 刷新音乐列表
@@ -302,7 +305,7 @@ class Manager_GUI:
     
     def stop_mission(self):
         '''
-        结束任务界面
+        结束任务按钮回调函数
         '''
         if not self.mission_on:
             messagebox.showerror("Error", "当前无任务！")
@@ -313,12 +316,11 @@ class Manager_GUI:
         time_diff = time_now - self.start_time
         time_diff_minute = time_diff.total_seconds()//60
 
-        # 存储任务记录
-        with open('./logs/mission_log.txt', 'a') as f:
-            start_time_str = self.start_time.strftime("%Y-%m-%d %H:%M:%S")
-            now_time_str = time_now.strftime("%Y-%m-%d %H:%M:%S")
-            f.write(f"{self.mission_class},备注:{self.mission_name},{start_time_str} —— {now_time_str},时长{int(time_diff_minute)}分钟\n")
+        start_time_str = self.start_time.strftime("%Y-%m-%d %H:%M:%S")
+        now_time_str = time_now.strftime("%Y-%m-%d %H:%M:%S")
         
+        self.history_logger.add_log(f"{self.mission_class},备注:{self.mission_name},{start_time_str} —— {now_time_str},时长{int(time_diff_minute)}分钟")
+
         self.mission_on = False
         self.mission_class = None
         self.mission_name = None
@@ -450,7 +452,7 @@ class Manager_GUI:
         statistics_frame.pack(side=tk.BOTTOM, pady=20)
         statistics_data = self.history_logger.history_statistic()
         statistics_labels = []
-        
+
         tk.Label(statistics_frame, text="统计数据：", font = font_settings).pack(pady=5)
         for name, tup in statistics_data.items():
             statistics_labels.append(tk.Label(statistics_frame, text=f"{name}: {tup[0]}次, 总时长{tup[1]}分钟", font = font_settings))
