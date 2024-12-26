@@ -371,6 +371,7 @@ class Manager_GUI:
         
         # 删除任务记录回调函数
         def delete():
+            font_settings = ('宋体', 18)
             logs_length = len(logs)
             delete_window = tk.Toplevel(history_window)
             delete_x = history_window.winfo_x() + (history_window.winfo_width() - 350) // 2
@@ -404,7 +405,7 @@ class Manager_GUI:
                     # 更新统计信息
                     statistics_data = self.history_logger.history_statistic()
                     for i in range(len(self.mission_types)):
-                        statistics_labels[i].config(text=f"{self.mission_types[i]}: {statistics_data[self.mission_types[i]][0]}次, 总时长{statistics_data[self.mission_types[i]][1]}分钟", font = self.font_settings)
+                        statistics_labels[i].config(text=f"{self.mission_types[i]}: {statistics_data[self.mission_types[i]][0]}次, 总时长{statistics_data[self.mission_types[i]][1]}分钟", font = font_settings)
 
                 except ValueError:
                     messagebox.showerror("Error", "请输入整数！")
@@ -424,6 +425,7 @@ class Manager_GUI:
             
         # 清空任务记录回调函数
         def clear():
+            font_settings = ('宋体', 18)
             confirm_window = tk.Toplevel(history_window)
             clear_x = history_window.winfo_x() + (history_window.winfo_width() - 350) // 2
             clear_y = history_window.winfo_y() + (history_window.winfo_height() - 200) // 2
